@@ -1,16 +1,11 @@
 <?php
 
-namespace Dinesh\Barcode;
+namespace tklovett\barcodes;
 
-use Dinesh\Barcode\QRcode;
-use Dinesh\Barcode\Datamatrix;
-use Dinesh\Barcode\PDF417;
-use Illuminate\Support\Str;
-
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+use tklovett\barcodes\QRcode;
+use tklovett\barcodes\Datamatrix;
+use tklovett\barcodes\PDF417;
+use Cocur\Slugify\Slugify;
 
 /**
  * Description of DNS2D
@@ -30,6 +25,13 @@ class DNS2D {
      * @var <type>
      */
     protected $store_path;
+
+    private $slugify;
+
+    function __construct()
+    {
+        $this->slugify = new Slugify();
+    }
 
     /**
      * Return a SVG string representation of barcode.
@@ -268,7 +270,7 @@ class DNS2D {
             }
             $y += $h;
         }
-        $file_name= Str::slug($code);
+        $file_name= $this->slugify->slugify($code);
         $save_file = $this->checkfile($this->store_path . $file_name . ".png");
 
         if ($imagick) {

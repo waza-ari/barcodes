@@ -1,58 +1,49 @@
-[![Latest Stable Version](https://poser.pugx.org/dinesh/barcode/v/stable.png)](https://packagist.org/packages/dinesh/barcode)
-[![Total Downloads](https://poser.pugx.org/dinesh/barcode/downloads.png)](https://packagist.org/packages/dinesh/barcode)
-[![Build Status](https://travis-ci.org/dineshrabara/barcode.png?branch=master)](https://travis-ci.org/dineshrabara/barcode)
+[![Latest Stable Version](https://poser.pugx.org/tklovett/barcodes/v/stable.png)](https://packagist.org/packages/tklovett/barcodes)
+[![Total Downloads](https://poser.pugx.org/tklovett/barcodes/downloads.png)](https://packagist.org/packages/tklovett/barcodes)
+[![Build Status](https://travis-ci.org/tklovett/barcodes.svg)](https://travis-ci.org/tklovett/barcodes)
 
-[Read More Wiki](https://github.com/dineshrabara/barcode/wiki)
+[Read More Wiki](https://github.com/tklovett/barcodes/wiki)
+
+Barcodes
+========
+
+*Generating barcodes in PHP since 2015!*
+
+Supports HTML, PNG embedded base64 code, and SVG canvas
+
+- QR code
+- PDF417
+- C39, C39+
+- C39E, C39E+
+- C93
+- S25, S25+
+- I25, I25+
+- C128, C128A, C128B, C128C
+- 2-Digits UPC-Based Extension
+- 5-Digits UPC-Based Extension
+- EAN 8, EAN 13
+- UPC-A, UPC-E
+- MSI (Variation of Plessey code)
+
+
 
 ## Installation
 
-Begin by installing this package through Composer. Edit your project's `composer.json` file to require `dinesh/barcode`.
+You can install this package with the Composer CLI:
+
+    composer require tklovett/barcodes
+
+Or manually add the dependency to your project's `composer.json`:
 
     "require": {
-		"laravel/framework": "4.0.*",
-		"dinesh/barcode": "dev-master"
+		"tklovett/barcodes": "dev-master"
 	}
 
 Next, update Composer from the Terminal:
 
     composer update
 
-Once this operation completes, the final step is to add the service provider. Open `app/config/app.php`, and add a new item to the providers array.
-
-    'Dinesh\Barcode\BarcodeServiceProvider'
-
-If you want to change Bar-code's settings (Store Path etc.), you need to publish its config file(s).
-
-    Run php artisan config:publish dinesh/barcode 
-
-Now add the alias.
-```php
-'aliases' => array(
-	'DNS1D' => 'Dinesh\Barcode\Facades\DNS1DFacade',
-        'DNS2D' => 'Dinesh\Barcode\Facades\DNS2DFacade',
-)
-```
-
-from the command line and you should find the files in app/config/packages/dinesh/barcode.
-
-
-Bar-code generator like 
-Qr Code,
-PDF417,
-C39,C39+,
-C39E,C39E+,
-C93,
-S25,S25+,
-I25,I25+,
-C128,C128A,C128B,C128C,
-2-Digits UPC-Based Extention,
-5-Digits UPC-Based Extention,
-EAN 8,EAN 13,
-UPC-A,UPC-E,
-MSI (Variation of Plessey code)
-
-generator in html, png embedded base64 code and SVG canvas 
-
+## Usage
 
     echo DNS1D::getBarcodeSVG("4445645656", "PHARMA2T");
     echo DNS1D::getBarcodeHTML("4445645656", "PHARMA2T");

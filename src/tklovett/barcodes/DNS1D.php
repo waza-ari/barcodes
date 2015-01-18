@@ -1,13 +1,8 @@
 <?php
 
-namespace Dinesh\Barcode;
+namespace tklovett\barcodes;
 
-use Illuminate\Support\Str;
-
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+use Cocur\Slugify\Slugify;
 
 /**
  * Description of DNS1D
@@ -15,6 +10,8 @@ use Illuminate\Support\Str;
  * @author dinesh
  */
 class DNS1D {
+
+
 
     /**
      * Array representation of barcode.
@@ -27,6 +24,13 @@ class DNS1D {
      * @var <type>
      */
     protected $store_path;
+
+    private $slugify;
+
+    function __construct()
+    {
+        $this->slugify = new Slugify();
+    }
 
     /**
      * Return a SVG string representation of barcode.
@@ -219,7 +223,7 @@ class DNS1D {
             }
             $x += $bw;
         }
-        $file_name= Str::slug($code);
+        $file_name= $this->slugify->slugify($code);
         $save_file = $this->checkfile($this->store_path . $file_name . ".png");
 
         if ($imagick) {

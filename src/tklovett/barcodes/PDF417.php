@@ -1,6 +1,6 @@
 <?php
 
-namespace Dinesh\Barcode;
+namespace tklovett\barcodes;
 
 // File name   : PDF417.php
 // Author      : Dinesh Rabara
