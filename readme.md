@@ -1,6 +1,8 @@
-[![Latest Stable Version](https://poser.pugx.org/tklovett/barcodes/v/stable.png)](https://packagist.org/packages/tklovett/barcodes)
-[![Total Downloads](https://poser.pugx.org/tklovett/barcodes/downloads.png)](https://packagist.org/packages/tklovett/barcodes)
+[![Latest Stable Version](https://poser.pugx.org/tklovett/barcodes/v/stable.svg)](https://packagist.org/packages/tklovett/barcodes)
+[![Total Downloads](https://poser.pugx.org/tklovett/barcodes/downloads.svg)](https://packagist.org/packages/tklovett/barcodes)
 [![Build Status](https://travis-ci.org/tklovett/barcodes.svg)](https://travis-ci.org/tklovett/barcodes)
+[![Coverage Status](https://coveralls.io/repos/tklovett/barcodes/badge.svg)](https://coveralls.io/r/tklovett/barcodes)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/tklovett/barcodes/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/tklovett/barcodes/?branch=master)
 
 [Read More Wiki](https://github.com/tklovett/barcodes/wiki)
 
