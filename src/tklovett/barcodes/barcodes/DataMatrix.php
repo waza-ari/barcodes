@@ -1,75 +1,57 @@
 <?php
 
-namespace tklovett\barcodes;
+namespace tklovett\barcodes\barcodes;
 
-// File name   : Datamatrix.php
-// Author      : Dinesh Rabara - Tecnick.com LTD - Manor Coach House, Church Hill, Aldershot, Hants, GU12 4RQ, UK - www.tecnick.com - info@tecnick.com
-// custom definitions
-if (!defined('DATAMATRIXDEFS')) {
+
+use tklovett\barcodes\TwoDimensionalBarcode;
+
+/**
+ * DataMatrix
+ * @package tklovett\barcodes\barcodes
+ * @author dinesh
+ * @author Tecnick.com LTD <info@tecnick.com>
+ * @author tklovett <tklovett@gmail.com>
+ */
+class DataMatrix extends TwoDimensionalBarcode
+{
 
     /**
-     * Indicate that definitions for this class are set
+     * ASCII encoding: ASCII character 0 to 127 (1 byte per CW)
      */
-    define('DATAMATRIXDEFS', true);
-
-    // -----------------------------------------------------
-} // end of custom definitions
-// #*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#
-
-
-/**
- * ASCII encoding: ASCII character 0 to 127 (1 byte per CW)
- */
-define('ENC_ASCII', 0);
-
-/**
- * C40 encoding: Upper-case alphanumeric (3/2 bytes per CW)
- */
-define('ENC_C40', 1);
-
-/**
- * TEXT encoding: Lower-case alphanumeric (3/2 bytes per CW)
- */
-define('ENC_TXT', 2);
-
-/**
- * X12 encoding: ANSI X12 (3/2 byte per CW)
- */
-define('ENC_X12', 3);
-
-/**
- * EDIFACT encoding: ASCII character 32 to 94 (4/3 bytes per CW)
- */
-define('ENC_EDF', 4);
-
-/**
- * BASE 256 encoding: ASCII character 0 to 255 (1 byte per CW)
- */
-define('ENC_BASE256', 5);
-
-/**
- * ASCII extended encoding: ASCII character 128 to 255 (1/2 byte per CW)
- */
-define('ENC_ASCII_EXT', 6);
-
-/**
- * ASCII number encoding: ASCII digits (2 bytes per CW)
- */
-define('ENC_ASCII_NUM', 7);
-
-class Datamatrix {
-
+    const ENC_ASCII = 0;
     /**
-     * Barcode array to be returned which is readable by Dinesh Rabara
-     * @protected
+     * C40 encoding: Upper-case alphanumeric (3/2 bytes per CW)
      */
-    protected $barcode_array = array();
+    const ENC_C40 = 1;
+    /**
+     * TEXT encoding: Lower-case alphanumeric (3/2 bytes per CW)
+     */
+    const ENC_TXT = 2;
+    /**
+     * X12 encoding: ANSI X12 (3/2 byte per CW)
+     */
+    const ENC_X12 = 3;
+    /**
+     * EDIFACT encoding: ASCII character 32 to 94 (4/3 bytes per CW)
+     */
+    const ENC_EDF = 4;
+    /**
+     * BASE 256 encoding: ASCII character 0 to 255 (1 byte per CW)
+     */
+    const ENC_BASE256 = 5;
+    /**
+     * ASCII extended encoding: ASCII character 128 to 255 (1/2 byte per CW)
+     */
+    const ENC_ASCII_EXT = 6;
+    /**
+     * ASCII number encoding: ASCII digits (2 bytes per CW)
+     */
+    const ENC_ASCII_NUM = 7;
 
     /**
      * Store last used encoding for data codewords.
-     * @protected
      */
-    protected $last_enc = ENC_ASCII;
+    private $last_enc = self::ENC_ASCII;
 
     /**
      * Table of Data Matrix ECC 200 Symbol Attributes:<ul>
@@ -90,9 +72,8 @@ class Datamatrix {
      * <li>data codewords per block</li>
      * <li>error codewords per block</li>
      * </ul>
-     * @protected
      */
-    protected $symbattr = array(
+    private $symbattr = array(
         // square form ---------------------------------------------------------------------------------------
         array(0x00a, 0x00a, 0x008, 0x008, 0x00a, 0x00a, 0x008, 0x008, 0x001, 0x001, 0x001, 0x003, 0x005, 0x001, 0x003, 0x005), // 10x10
         array(0x00c, 0x00c, 0x00a, 0x00a, 0x00c, 0x00c, 0x00a, 0x00a, 0x001, 0x001, 0x001, 0x005, 0x007, 0x001, 0x005, 0x007), // 12x12
@@ -128,16 +109,16 @@ class Datamatrix {
     );
 
     /**
-     * Map encodation modes whit character sets.
-     * @protected
+     * Map encoding modes with character sets.
+     * @private
      */
-    protected $chset_id = array(ENC_C40 => 'C40', ENC_TXT => 'TXT', ENC_X12 => 'X12');
+    private $chset_id = array(self::ENC_C40 => 'C40', self::ENC_TXT => 'TXT', self::ENC_X12 => 'X12');
 
     /**
      * Basic set of charactes for each encodation mode.
-     * @protected
+     * @private
      */
-    protected $chset = array(
+    private $chset = array(
         'C40' => array(// Basic set for C40 ----------------------------------------------------------------------------
             'S1' => 0x00, 'S2' => 0x01, 'S3' => 0x02, 0x20 => 0x03, 0x30 => 0x04, 0x31 => 0x05, 0x32 => 0x06, 0x33 => 0x07, 0x34 => 0x08, 0x35 => 0x09, //
             0x36 => 0x0a, 0x37 => 0x0b, 0x38 => 0x0c, 0x39 => 0x0d, 0x41 => 0x0e, 0x42 => 0x0f, 0x43 => 0x10, 0x44 => 0x11, 0x45 => 0x12, 0x46 => 0x13, //
@@ -174,18 +155,15 @@ class Datamatrix {
             0x51 => 0x1e, 0x52 => 0x1f, 0x53 => 0x20, 0x54 => 0x21, 0x55 => 0x22, 0x56 => 0x23, 0x57 => 0x24, 0x58 => 0x25, 0x59 => 0x26, 0x5a => 0x27) //
     );
 
-// -----------------------------------------------------------------------------
-
     /**
-     * This is the class constructor.
-     * Creates a datamatrix object
-     * @param $code (string) Code to represent using Datamatrix.
-     * @public
+     * Construct a Data Matrix barcode array
+     * @param string $code The code to be represented by this barcode.
      */
-    public function __construct($code) {
-        $barcode_array = array();
+    function __construct($code)
+    {
+        parent::__construct($code);
         if ((is_null($code)) OR ($code == '\0') OR ($code == '')) {
-            return false;
+            return;
         }
         // get data codewords
         $cw = $this->getHighLevelEncoding($code);
@@ -193,7 +171,7 @@ class Datamatrix {
         $nd = count($cw);
         // check size
         if ($nd > 1558) {
-            return false;
+            return;
         }
         // get minimum required matrix size.
         foreach ($this->symbattr as $params) {
@@ -203,14 +181,14 @@ class Datamatrix {
         }
         if ($params[11] < $nd) {
             // too much data
-            return false;
+            return;
         } elseif ($params[11] > $nd) {
             // add padding
-            if ($this->last_enc == ENC_EDF) {
+            if ($this->last_enc == self::ENC_EDF) {
                 // switch to ASCII encoding
                 $cw[] = 124;
                 ++$nd;
-            } elseif (($this->last_enc != ENC_ASCII) AND ($this->last_enc != ENC_BASE256)) {
+            } elseif (($this->last_enc != self::ENC_ASCII) AND ($this->last_enc != self::ENC_BASE256)) {
                 // switch to ASCII encoding
                 $cw[] = 254;
                 ++$nd;
@@ -227,8 +205,6 @@ class Datamatrix {
         }
         // add error correction codewords
         $cw = $this->getErrorCorrection($cw, $params[13], $params[14], $params[15]);
-        // initialize empty arrays
-        $grid = array_fill(0, ($params[2] * $params[3]), 0);
         // get placement map
         $places = $this->getPlacemetMap($params[2], $params[3]);
         // fill the grid with data
@@ -293,15 +269,6 @@ class Datamatrix {
     }
 
     /**
-     * Returns a barcode array which is readable by Dinesh Rabara
-     * @return array barcode array readable by Dinesh Rabara;
-     * @public
-     */
-    public function getBarcodeArray() {
-        return $this->barcode_array;
-    }
-
-    /**
      * Product of two numbers in a Power-of-Two Galois Field
      * @param $a (int) first number to multiply.
      * @param $b (int) second number to multiply.
@@ -309,9 +276,9 @@ class Datamatrix {
      * @param $alog (array) Anti-Log table.
      * @param $gf (array) Number of Factors of the Reed-Solomon polynomial.
      * @return int product
-     * @protected
      */
-    protected function getGFProduct($a, $b, $log, $alog, $gf) {
+    private function getGFProduct($a, $b, $log, $alog, $gf)
+    {
         if (($a == 0) OR ($b == 0)) {
             return 0;
         }
@@ -327,9 +294,9 @@ class Datamatrix {
      * @param $gf (int) numner of fields on log/antilog table (power of 2).
      * @param $pp (int) The value of its prime modulus polynomial (301 for ECC200).
      * @return array data codewords + error codewords
-     * @protected
      */
-    protected function getErrorCorrection($wd, $nb, $nd, $nc, $gf = 256, $pp = 301) {
+    private function getErrorCorrection($wd, $nb, $nd, $nc, $gf = 256, $pp = 301)
+    {
         // generate the log ($log) and antilog ($alog) tables
         $log[0] = 0;
         $alog[0] = 1;
@@ -386,12 +353,12 @@ class Datamatrix {
 
     /**
      * Return the 253-state codeword
-     * @param $cwpad (int) Pad codeword.
-     * @param $cwpos (int) Number of data codewords from the beginning of encoded data.
-     * @return pad codeword
-     * @protected
+     * @param int $cwpad Pad codeword.
+     * @param int $cwpos Number of data codewords from the beginning of encoded data.
+     * @return int pad codeword
      */
-    protected function get253StateCodeword($cwpad, $cwpos) {
+    private function get253StateCodeword($cwpad, $cwpos)
+    {
         $pad = ($cwpad + (((149 * $cwpos) % 253) + 1));
         if ($pad > 254) {
             $pad -= 254;
@@ -401,12 +368,12 @@ class Datamatrix {
 
     /**
      * Return the 255-state codeword
-     * @param $cwpad (int) Pad codeword.
-     * @param $cwpos (int) Number of data codewords from the beginning of encoded data.
-     * @return pad codeword
-     * @protected
+     * @param int $cwpad Pad codeword.
+     * @param int $cwpos Number of data codewords from the beginning of encoded data.
+     * @return int pad codeword
      */
-    protected function get255StateCodeword($cwpad, $cwpos) {
+    private function get255StateCodeword($cwpad, $cwpos)
+    {
         $pad = ($cwpad + (((149 * $cwpos) % 255) + 1));
         if ($pad > 255) {
             $pad -= 256;
@@ -416,66 +383,66 @@ class Datamatrix {
 
     /**
      * Returns true if the char belongs to the selected mode
-     * @param $chr (int) Character (byte) to check.
-     * @param $mode (int) Current encoding mode.
+     * @param int $chr Character (byte) to check.
+     * @param int $mode Current encoding mode.
      * @return boolean true if the char is of the selected mode.
-     * @protected
      */
-    protected function isCharMode($chr, $mode) {
+    private function isCharMode($chr, $mode)
+    {
         $status = false;
         switch ($mode) {
-            case ENC_ASCII: { // ASCII character 0 to 127
-                    $status = (($chr >= 0) AND ($chr <= 127));
-                    break;
-                }
-            case ENC_C40: { // Upper-case alphanumeric
-                    $status = (($chr == 32) OR (($chr >= 48) AND ($chr <= 57)) OR (($chr >= 65) AND ($chr <= 90)));
-                    break;
-                }
-            case ENC_TXT: { // Lower-case alphanumeric
-                    $status = (($chr == 32) OR (($chr >= 48) AND ($chr <= 57)) OR (($chr >= 97) AND ($chr <= 122)));
-                    break;
-                }
-            case ENC_X12: { // ANSI X12
-                    $status = (($chr == 13) OR ($chr == 42) OR ($chr == 62));
-                    break;
-                }
-            case ENC_EDF: { // ASCII character 32 to 94
-                    $status = (($chr >= 32) AND ($chr <= 94));
-                    break;
-                }
-            case ENC_BASE256: { // Function character (FNC1, Structured Append, Reader Program, or Code Page)
-                    $status = (($chr == 232) OR ($chr == 233) OR ($chr == 234) OR ($chr == 241));
-                    break;
-                }
-            case ENC_ASCII_EXT: { // ASCII character 128 to 255
-                    $status = (($chr >= 128) AND ($chr <= 255));
-                    break;
-                }
-            case ENC_ASCII_NUM: { // ASCII digits
-                    $status = (($chr >= 48) AND ($chr <= 57));
-                    break;
-                }
+            case self::ENC_ASCII: { // ASCII character 0 to 127
+                $status = (($chr >= 0) AND ($chr <= 127));
+                break;
+            }
+            case self::ENC_C40: { // Upper-case alphanumeric
+                $status = (($chr == 32) OR (($chr >= 48) AND ($chr <= 57)) OR (($chr >= 65) AND ($chr <= 90)));
+                break;
+            }
+            case self::ENC_TXT: { // Lower-case alphanumeric
+                $status = (($chr == 32) OR (($chr >= 48) AND ($chr <= 57)) OR (($chr >= 97) AND ($chr <= 122)));
+                break;
+            }
+            case self::ENC_X12: { // ANSI X12
+                $status = (($chr == 13) OR ($chr == 42) OR ($chr == 62));
+                break;
+            }
+            case self::ENC_EDF: { // ASCII character 32 to 94
+                $status = (($chr >= 32) AND ($chr <= 94));
+                break;
+            }
+            case self::ENC_BASE256: { // Function character (FNC1, Structured Append, Reader Program, or Code Page)
+                $status = (($chr == 232) OR ($chr == 233) OR ($chr == 234) OR ($chr == 241));
+                break;
+            }
+            case self::ENC_ASCII_EXT: { // ASCII character 128 to 255
+                $status = (($chr >= 128) AND ($chr <= 255));
+                break;
+            }
+            case self::ENC_ASCII_NUM: { // ASCII digits
+                $status = (($chr >= 48) AND ($chr <= 57));
+                break;
+            }
         }
         return $status;
     }
 
     /**
      * The look-ahead test scans the data to be encoded to find the best mode (Annex P - steps from J to S).
-     * @param $data (string) data to encode
-     * @param $pos (int) current position
-     * @param $mode (int) current encoding mode
+     * @param string $data data to encode
+     * @param int $pos current position
+     * @param int $mode current encoding mode
      * @return int encoding mode
-     * @protected
      */
-    protected function lookAheadTest($data, $pos, $mode) {
+    private function lookAheadTest($data, $pos, $mode)
+    {
         $data_length = strlen($data);
         if ($pos >= $data_length) {
             return $mode;
         }
         $charscount = 0; // count processed chars
         // STEP J
-        if ($mode == ENC_ASCII) {
+        if ($mode == self::ENC_ASCII) {
             $numch = array(0, 1, 1, 1, 1, 1.25);
         } else {
             $numch = array(1, 2, 2, 2, 2, 2.25);
@@ -484,108 +451,109 @@ class Datamatrix {
         while (true) {
             // STEP K
             if (($pos + $charscount) == $data_length) {
-                if ($numch[ENC_ASCII] <= ceil(min($numch[ENC_C40], $numch[ENC_TXT], $numch[ENC_X12], $numch[ENC_EDF], $numch[ENC_BASE256]))) {
-                    return ENC_ASCII;
+                if ($numch[self::ENC_ASCII] <= ceil(min($numch[self::ENC_C40], $numch[self::ENC_TXT], $numch[self::ENC_X12], $numch[self::ENC_EDF], $numch[self::ENC_BASE256]))) {
+                    return self::ENC_ASCII;
                 }
-                if ($numch[ENC_BASE256] < ceil(min($numch[ENC_ASCII], $numch[ENC_C40], $numch[ENC_TXT], $numch[ENC_X12], $numch[ENC_EDF]))) {
-                    return ENC_BASE256;
+                if ($numch[self::ENC_BASE256] < ceil(min($numch[self::ENC_ASCII], $numch[self::ENC_C40], $numch[self::ENC_TXT], $numch[self::ENC_X12], $numch[self::ENC_EDF]))) {
+                    return self::ENC_BASE256;
                 }
-                if ($numch[ENC_EDF] < ceil(min($numch[ENC_ASCII], $numch[ENC_C40], $numch[ENC_TXT], $numch[ENC_X12], $numch[ENC_BASE256]))) {
-                    return ENC_EDF;
+                if ($numch[self::ENC_EDF] < ceil(min($numch[self::ENC_ASCII], $numch[self::ENC_C40], $numch[self::ENC_TXT], $numch[self::ENC_X12], $numch[self::ENC_BASE256]))) {
+                    return self::ENC_EDF;
                 }
-                if ($numch[ENC_TXT] < ceil(min($numch[ENC_ASCII], $numch[ENC_C40], $numch[ENC_X12], $numch[ENC_EDF], $numch[ENC_BASE256]))) {
-                    return ENC_TXT;
+                if ($numch[self::ENC_TXT] < ceil(min($numch[self::ENC_ASCII], $numch[self::ENC_C40], $numch[self::ENC_X12], $numch[self::ENC_EDF], $numch[self::ENC_BASE256]))) {
+                    return self::ENC_TXT;
                 }
-                if ($numch[ENC_X12] < ceil(min($numch[ENC_ASCII], $numch[ENC_C40], $numch[ENC_TXT], $numch[ENC_EDF], $numch[ENC_BASE256]))) {
-                    return ENC_X12;
+                if ($numch[self::ENC_X12] < ceil(min($numch[self::ENC_ASCII], $numch[self::ENC_C40], $numch[self::ENC_TXT], $numch[self::ENC_EDF], $numch[self::ENC_BASE256]))) {
+                    return self::ENC_X12;
                 }
-                return ENC_C40;
+                return self::ENC_C40;
             }
             // get char
             $chr = ord($data{($pos + $charscount)});
             $charscount++;
             // STEP L
-            if ($this->isCharMode($chr, ENC_ASCII_NUM)) {
-                $numch[ENC_ASCII] += (1 / 2);
-            } elseif ($this->isCharMode($chr, ENC_ASCII_EXT)) {
-                $numch[ENC_ASCII] = ceil($numch[ENC_ASCII]);
-                $numch[ENC_ASCII] += 2;
+            if ($this->isCharMode($chr, self::ENC_ASCII_NUM)) {
+                $numch[self::ENC_ASCII] += (1 / 2);
+            } elseif ($this->isCharMode($chr, self::ENC_ASCII_EXT)) {
+                $numch[self::ENC_ASCII] = ceil($numch[self::ENC_ASCII]);
+                $numch[self::ENC_ASCII] += 2;
             } else {
-                $numch[ENC_ASCII] = ceil($numch[ENC_ASCII]);
-                $numch[ENC_ASCII] += 1;
+                $numch[self::ENC_ASCII] = ceil($numch[self::ENC_ASCII]);
+                $numch[self::ENC_ASCII] += 1;
             }
             // STEP M
-            if ($this->isCharMode($chr, ENC_C40)) {
-                $numch[ENC_C40] += (2 / 3);
-            } elseif ($this->isCharMode($chr, ENC_ASCII_EXT)) {
-                $numch[ENC_C40] += (8 / 3);
+            if ($this->isCharMode($chr, self::ENC_C40)) {
+                $numch[self::ENC_C40] += (2 / 3);
+            } elseif ($this->isCharMode($chr, self::ENC_ASCII_EXT)) {
+                $numch[self::ENC_C40] += (8 / 3);
             } else {
-                $numch[ENC_C40] += (4 / 3);
+                $numch[self::ENC_C40] += (4 / 3);
             }
             // STEP N
-            if ($this->isCharMode($chr, ENC_TXT)) {
-                $numch[ENC_TXT] += (2 / 3);
-            } elseif ($this->isCharMode($chr, ENC_ASCII_EXT)) {
-                $numch[ENC_TXT] += (8 / 3);
+            if ($this->isCharMode($chr, self::ENC_TXT)) {
+                $numch[self::ENC_TXT] += (2 / 3);
+            } elseif ($this->isCharMode($chr, self::ENC_ASCII_EXT)) {
+                $numch[self::ENC_TXT] += (8 / 3);
             } else {
-                $numch[ENC_TXT] += (4 / 3);
+                $numch[self::ENC_TXT] += (4 / 3);
             }
             // STEP O
-            if ($this->isCharMode($chr, ENC_X12) OR $this->isCharMode($chr, ENC_C40)) {
-                $numch[ENC_X12] += (2 / 3);
-            } elseif ($this->isCharMode($chr, ENC_ASCII_EXT)) {
-                $numch[ENC_X12] += (13 / 3);
+            if ($this->isCharMode($chr, self::ENC_X12) OR $this->isCharMode($chr, self::ENC_C40)) {
+                $numch[self::ENC_X12] += (2 / 3);
+            } elseif ($this->isCharMode($chr, self::ENC_ASCII_EXT)) {
+                $numch[self::ENC_X12] += (13 / 3);
             } else {
-                $numch[ENC_X12] += (10 / 3);
+                $numch[self::ENC_X12] += (10 / 3);
             }
             // STEP P
-            if ($this->isCharMode($chr, ENC_EDF)) {
-                $numch[ENC_EDF] += (3 / 4);
-            } elseif ($this->isCharMode($chr, ENC_ASCII_EXT)) {
-                $numch[ENC_EDF] += (17 / 4);
+            if ($this->isCharMode($chr, self::ENC_EDF)) {
+                $numch[self::ENC_EDF] += (3 / 4);
+            } elseif ($this->isCharMode($chr, self::ENC_ASCII_EXT)) {
+                $numch[self::ENC_EDF] += (17 / 4);
             } else {
-                $numch[ENC_EDF] += (13 / 4);
+                $numch[self::ENC_EDF] += (13 / 4);
             }
             // STEP Q
-            if ($this->isCharMode($chr, ENC_BASE256)) {
-                $numch[ENC_BASE256] += 4;
+            if ($this->isCharMode($chr, self::ENC_BASE256)) {
+                $numch[self::ENC_BASE256] += 4;
             } else {
-                $numch[ENC_BASE256] += 1;
+                $numch[self::ENC_BASE256] += 1;
             }
             // STEP R
             if ($charscount >= 4) {
-                if (($numch[ENC_ASCII] + 1) <= min($numch[ENC_C40], $numch[ENC_TXT], $numch[ENC_X12], $numch[ENC_EDF], $numch[ENC_BASE256])) {
-                    return ENC_ASCII;
+                if (($numch[self::ENC_ASCII] + 1) <= min($numch[self::ENC_C40], $numch[self::ENC_TXT], $numch[self::ENC_X12], $numch[self::ENC_EDF], $numch[self::ENC_BASE256])) {
+                    return self::ENC_ASCII;
                 }
-                if ((($numch[ENC_BASE256] + 1) <= $numch[ENC_ASCII])
-                        OR (($numch[ENC_BASE256] + 1) < min($numch[ENC_C40], $numch[ENC_TXT], $numch[ENC_X12], $numch[ENC_EDF]))) {
-                    return ENC_BASE256;
+                if ((($numch[self::ENC_BASE256] + 1) <= $numch[self::ENC_ASCII])
+                    OR (($numch[self::ENC_BASE256] + 1) < min($numch[self::ENC_C40], $numch[self::ENC_TXT], $numch[self::ENC_X12], $numch[self::ENC_EDF]))
+                ) {
+                    return self::ENC_BASE256;
                 }
-                if (($numch[ENC_EDF] + 1) < min($numch[ENC_ASCII], $numch[ENC_C40], $numch[ENC_TXT], $numch[ENC_X12], $numch[ENC_BASE256])) {
-                    return ENC_EDF;
+                if (($numch[self::ENC_EDF] + 1) < min($numch[self::ENC_ASCII], $numch[self::ENC_C40], $numch[self::ENC_TXT], $numch[self::ENC_X12], $numch[self::ENC_BASE256])) {
+                    return self::ENC_EDF;
                 }
-                if (($numch[ENC_TXT] + 1) < min($numch[ENC_ASCII], $numch[ENC_C40], $numch[ENC_X12], $numch[ENC_EDF], $numch[ENC_BASE256])) {
-                    return ENC_TXT;
+                if (($numch[self::ENC_TXT] + 1) < min($numch[self::ENC_ASCII], $numch[self::ENC_C40], $numch[self::ENC_X12], $numch[self::ENC_EDF], $numch[self::ENC_BASE256])) {
+                    return self::ENC_TXT;
                 }
-                if (($numch[ENC_X12] + 1) < min($numch[ENC_ASCII], $numch[ENC_C40], $numch[ENC_TXT], $numch[ENC_EDF], $numch[ENC_BASE256])) {
-                    return ENC_X12;
+                if (($numch[self::ENC_X12] + 1) < min($numch[self::ENC_ASCII], $numch[self::ENC_C40], $numch[self::ENC_TXT], $numch[self::ENC_EDF], $numch[self::ENC_BASE256])) {
+                    return self::ENC_X12;
                 }
-                if (($numch[ENC_C40] + 1) < min($numch[ENC_ASCII], $numch[ENC_TXT], $numch[ENC_EDF], $numch[ENC_BASE256])) {
-                    if ($numch[ENC_C40] < $numch[ENC_X12]) {
-                        return ENC_C40;
+                if (($numch[self::ENC_C40] + 1) < min($numch[self::ENC_ASCII], $numch[self::ENC_TXT], $numch[self::ENC_EDF], $numch[self::ENC_BASE256])) {
+                    if ($numch[self::ENC_C40] < $numch[self::ENC_X12]) {
+                        return self::ENC_C40;
                     }
-                    if ($numch[ENC_C40] == $numch[ENC_X12]) {
+                    if ($numch[self::ENC_C40] == $numch[self::ENC_X12]) {
                         $k = ($pos + $charscount + 1);
                         while ($k < $data_length) {
                             $tmpchr = ord($data{$k});
-                            if ($this->isCharMode($tmpchr, ENC_X12)) {
-                                return ENC_X12;
-                            } elseif (!($this->isCharMode($tmpchr, ENC_X12) OR $this->isCharMode($tmpchr, ENC_C40))) {
+                            if ($this->isCharMode($tmpchr, self::ENC_X12)) {
+                                return self::ENC_X12;
+                            } elseif (!($this->isCharMode($tmpchr, self::ENC_X12) OR $this->isCharMode($tmpchr, self::ENC_C40))) {
                                 break;
                             }
                             ++$k;
                         }
-                        return ENC_C40;
+                        return self::ENC_C40;
                     }
                 }
             }
@@ -594,47 +562,47 @@ class Datamatrix {
 
     /**
      * Get the switching codeword to a new encoding mode (latch codeword)
-     * @param $mode (int) New encoding mode.
-     * @return (int) Switch codeword.
-     * @protected
+     * @param int $mode New encoding mode.
+     * @return int Switch codeword.
      */
-    protected function getSwitchEncodingCodeword($mode) {
+    private function getSwitchEncodingCodeword($mode)
+    {
         switch ($mode) {
-            case ENC_ASCII: { // ASCII character 0 to 127
-                    $cw = 254;
-                    break;
-                }
-            case ENC_C40: { // Upper-case alphanumeric
-                    $cw = 230;
-                    break;
-                }
-            case ENC_TXT: { // Lower-case alphanumeric
-                    $cw = 239;
-                    break;
-                }
-            case ENC_X12: { // ANSI X12
-                    $cw = 238;
-                    break;
-                }
-            case ENC_EDF: { // ASCII character 32 to 94
-                    $cw = 240;
-                    break;
-                }
-            case ENC_BASE256: { // Function character (FNC1, Structured Append, Reader Program, or Code Page)
-                    $cw = 231;
-                    break;
-                }
+            case self::ENC_ASCII: { // ASCII character 0 to 127
+                $cw = 254;
+                break;
+            }
+            case self::ENC_C40: { // Upper-case alphanumeric
+                $cw = 230;
+                break;
+            }
+            case self::ENC_TXT: { // Lower-case alphanumeric
+                $cw = 239;
+                break;
+            }
+            case self::ENC_X12: { // ANSI X12
+                $cw = 238;
+                break;
+            }
+            case self::ENC_EDF: { // ASCII character 32 to 94
+                $cw = 240;
+                break;
+            }
+            case self::ENC_BASE256: { // Function character (FNC1, Structured Append, Reader Program, or Code Page)
+                $cw = 231;
+                break;
+            }
         }
         return $cw;
     }
 
     /**
      * Choose the minimum matrix size and return the max number of data codewords.
-     * @param $numcw (int) Number of current codewords.
+     * @param int $numcw Number of current codewords.
      * @return number of data codewords in matrix
-     * @protected
      */
-    protected function getMaxDataCodewords($numcw) {
+    private function getMaxDataCodewords($numcw)
+    {
         foreach ($this->symbattr as $key => $matrix) {
             if ($matrix[11] >= $numcw) {
                 return $matrix[11];
@@ -645,242 +613,242 @@ class Datamatrix {
 
     /**
      * Get high level encoding using the minimum symbol data characters for ECC 200
-     * @param $data (string) data to encode
+     * @param string $data data to encode
      * @return array of codewords
-     * @protected
      */
-    protected function getHighLevelEncoding($data) {
+    private function getHighLevelEncoding($data)
+    {
         // STEP A. Start in ASCII encodation.
-        $enc = ENC_ASCII; // current encoding mode
+        $enc = self::ENC_ASCII; // current encoding mode
         $pos = 0; // current position
         $cw = array(); // array of codewords to be returned
         $cw_num = 0; // number of data codewords
         $data_lenght = strlen($data); // number of chars
         while ($pos < $data_lenght) {
             switch ($enc) {
-                case ENC_ASCII: { // STEP B. While in ASCII encodation
-                        if (($data_lenght > 1) AND ($pos < ($data_lenght - 1)) AND ($this->isCharMode(ord($data{($pos)}), ENC_ASCII_NUM) AND $this->isCharMode(ord($data{($pos + 1)}), ENC_ASCII_NUM))) {
-                            // 1. If the next data sequence is at least 2 consecutive digits, encode the next two digits as a double digit in ASCII mode.
-                            $cw[] = (intval(substr($data, $pos, 2)) + 130);
+                case self::ENC_ASCII: { // STEP B. While in ASCII encodation
+                    if (($data_lenght > 1) AND ($pos < ($data_lenght - 1)) AND ($this->isCharMode(ord($data{($pos)}), self::ENC_ASCII_NUM) AND $this->isCharMode(ord($data{($pos + 1)}), self::ENC_ASCII_NUM))) {
+                        // 1. If the next data sequence is at least 2 consecutive digits, encode the next two digits as a double digit in ASCII mode.
+                        $cw[] = (intval(substr($data, $pos, 2)) + 130);
+                        ++$cw_num;
+                        $pos += 2;
+                    } else {
+                        // 2. If the look-ahead test (starting at step J) indicates another mode, switch to that mode.
+                        $newenc = $this->lookAheadTest($data, $pos, $enc);
+                        if ($newenc != $enc) {
+                            // switch to new encoding
+                            $enc = $newenc;
+                            $cw[] = $this->getSwitchEncodingCodeword($enc);
                             ++$cw_num;
-                            $pos += 2;
                         } else {
-                            // 2. If the look-ahead test (starting at step J) indicates another mode, switch to that mode.
+                            // get new byte
+                            $chr = ord($data{($pos)});
+                            ++$pos;
+                            if ($this->isCharMode($chr, self::ENC_ASCII_EXT)) {
+                                // 3. If the next data character is extended ASCII (greater than 127) encode it in ASCII mode first using the Upper Shift (value 235) character.
+                                $cw[] = 235;
+                                $cw[] = ($chr - 127);
+                                $cw_num += 2;
+                            } else {
+                                // 4. Otherwise process the next data character in ASCII encodation.
+                                $cw[] = ($chr + 1);
+                                ++$cw_num;
+                            }
+                        }
+                    }
+                    break;
+                }
+                case self::ENC_C40 :   // Upper-case alphanumeric
+                case self::ENC_TXT :   // Lower-case alphanumeric
+                case self::ENC_X12 : { // ANSI X12
+                    $temp_cw = array();
+                    $p = 0;
+                    $epos = $pos;
+                    // get charset ID
+                    $set_id = $this->chset_id[$enc];
+                    // get basic charset for current encoding
+                    $charset = $this->chset[$set_id];
+                    do {
+                        // 2. process the next character in C40 encodation.
+                        $chr = ord($data{($epos)});
+                        ++$epos;
+                        // check for extended character
+                        if ($chr & 0x80) {
+                            if ($enc == self::ENC_X12) {
+                                return false;
+                            }
+                            $chr = ($chr & 0x7f);
+                            $temp_cw[] = 1; // shift 2
+                            $temp_cw[] = 30; // upper shift
+                            $p += 2;
+                        }
+                        if (isset($charset[$chr])) {
+                            $temp_cw[] = $charset[$chr];
+                            ++$p;
+                        } else {
+                            if (isset($this->chset['SH1'][$chr])) {
+                                $temp_cw[] = 0; // shift 1
+                                $shiftset = $this->chset['SH1'];
+                            } elseif (isset($chr, $this->chset['SH2'][$chr])) {
+                                $temp_cw[] = 1; // shift 2
+                                $shiftset = $this->chset['SH2'];
+                            } elseif (($enc == self::ENC_C40) AND isset($this->chset['S3C'][$chr])) {
+                                $temp_cw[] = 2; // shift 3
+                                $shiftset = $this->chset['S3C'];
+                            } elseif (($enc == self::ENC_TXT) AND isset($this->chset['S3T'][$chr])) {
+                                $temp_cw[] = 2; // shift 3
+                                $shiftset = $this->chset['S3T'];
+                            } else {
+                                return false;
+                            }
+                            $temp_cw[] = $shiftset[$chr];
+                            $p += 2;
+                        }
+                        if ($p >= 3) {
+                            $c1 = array_shift($temp_cw);
+                            $c2 = array_shift($temp_cw);
+                            $c3 = array_shift($temp_cw);
+                            $p -= 3;
+                            $tmp = ((1600 * $c1) + (40 * $c2) + $c3 + 1);
+                            $cw[] = ($tmp >> 8);
+                            $cw[] = ($tmp % 256);
+                            $cw_num += 2;
+                            $pos = $epos;
+                            // 1. If the C40 encoding is at the point of starting a new double symbol character and if the look-ahead test (starting at step J) indicates another mode, switch to that mode.
                             $newenc = $this->lookAheadTest($data, $pos, $enc);
                             if ($newenc != $enc) {
-                                // switch to new encoding
                                 $enc = $newenc;
                                 $cw[] = $this->getSwitchEncodingCodeword($enc);
                                 ++$cw_num;
-                            } else {
-                                // get new byte
-                                $chr = ord($data{($pos)});
-                                ++$pos;
-                                if ($this->isCharMode($chr, ENC_ASCII_EXT)) {
-                                    // 3. If the next data character is extended ASCII (greater than 127) encode it in ASCII mode first using the Upper Shift (value 235) character.
-                                    $cw[] = 235;
-                                    $cw[] = ($chr - 127);
-                                    $cw_num += 2;
-                                } else {
-                                    // 4. Otherwise process the next data character in ASCII encodation.
-                                    $cw[] = ($chr + 1);
-                                    ++$cw_num;
-                                }
+                                break;
                             }
                         }
-                        break;
+                    } while (($p > 0) AND ($epos < $data_lenght));
+                    // process last data (if any)
+                    if ($p > 0) {
+                        // get remaining number of data symbols
+                        $cwr = ($this->getMaxDataCodewords($cw_num + 2) - $cw_num);
+                        if (($cwr == 1) AND ($p == 1)) {
+                            // d. If one symbol character remains and one C40 value (data character) remains to be encoded
+                            $c1 = array_shift($temp_cw);
+                            --$p;
+                            $cw[] = ($c1 + 1);
+                            ++$cw_num;
+                        } elseif (($cwr == 2) AND ($p == 1)) {
+                            // c. If two symbol characters remain and only one C40 value (data character) remains to be encoded
+                            $c1 = array_shift($temp_cw);
+                            --$p;
+                            $cw[] = 254;
+                            $cw[] = ($c1 + 1);
+                            $cw_num += 2;
+                        } elseif (($cwr == 2) AND ($p == 2)) {
+                            // b. If two symbol characters remain and two C40 values remain to be encoded
+                            $c1 = array_shift($temp_cw);
+                            $c2 = array_shift($temp_cw);
+                            $p -= 2;
+                            $tmp = ((1600 * $c1) + (40 * $c2) + 1);
+                            $cw[] = ($tmp >> 8);
+                            $cw[] = ($tmp % 256);
+                            $cw_num += 2;
+                        } else {
+                            // switch to ASCII encoding
+                            $enc = self::ENC_ASCII;
+                            $cw[] = $this->getSwitchEncodingCodeword($enc);
+                            ++$cw_num;
+                        }
                     }
-                case ENC_C40 :   // Upper-case alphanumeric
-                case ENC_TXT :   // Lower-case alphanumeric
-                case ENC_X12 : { // ANSI X12
-                        $temp_cw = array();
-                        $p = 0;
-                        $epos = $pos;
-                        // get charset ID
-                        $set_id = $this->chset_id[$enc];
-                        // get basic charset for current encoding
-                        $charset = $this->chset[$set_id];
-                        do {
-                            // 2. process the next character in C40 encodation.
-                            $chr = ord($data{($epos)});
-                            ++$epos;
-                            // check for extended character
-                            if ($chr & 0x80) {
-                                if ($enc == ENC_X12) {
-                                    return false;
+                    break;
+                }
+                case self::ENC_EDF: { // F. While in EDIFACT (EDF) encodation
+                    // initialize temporary array with 0 lenght
+                    $temp_cw = array();
+                    $epos = $pos;
+                    $field_lenght = 0;
+                    while ($epos < $data_lenght) {
+                        // 2. process the next character in EDIFACT encodation.
+                        $chr = ord($data{($epos)});
+                        ++$epos;
+                        $temp_cw[] = $chr;
+                        ++$field_lenght;
+                        if (($field_lenght == 4) OR ($epos == $data_lenght)) {
+                            if ($field_lenght < 4) {
+                                // set unlatch character
+                                $temp_cw[] = 0x1f;
+                                ++$field_lenght;
+                                $enc = self::ENC_ASCII;
+                                // fill empty characters
+                                for ($i = $field_lenght; $i < 4; ++$i) {
+                                    $temp_cw[] = 0;
                                 }
-                                $chr = ($chr & 0x7f);
-                                $temp_cw[] = 1; // shift 2
-                                $temp_cw[] = 30; // upper shift
-                                $p += 2;
                             }
-                            if (isset($charset[$chr])) {
-                                $temp_cw[] = $charset[$chr];
-                                ++$p;
+                            // encodes four data characters in three codewords
+                            $cw[] = (($temp_cw[0] & 0x3F) << 2) + (($temp_cw[1] & 0x30) >> 4);
+                            $cw[] = (($temp_cw[1] & 0x0F) << 4) + (($temp_cw[2] & 0x3C) >> 2);
+                            $cw[] = (($temp_cw[2] & 0x03) << 6) + ($temp_cw[3] & 0x3F);
+                            $cw_num += 3;
+                            $temp_cw = array();
+                            $pos = $epos;
+                            $field_lenght = 0;
+                        }
+                        // 1. If the EDIFACT encoding is at the point of starting a new triple symbol character and if the look-ahead test (starting at step J) indicates another mode, switch to that mode.
+                        if ($field_lenght == 0) {
+                            // get remaining number of data symbols
+                            $cwr = ($this->getMaxDataCodewords($cw_num + 2) - $cw_num);
+                            if ($cwr < 3) {
+                                // return to ascii without unlatch
+                                $enc = self::ENC_ASCII;
+                                break; // exit from EDIFACT mode
                             } else {
-                                if (isset($this->chset['SH1'][$chr])) {
-                                    $temp_cw[] = 0; // shift 1
-                                    $shiftset = $this->chset['SH1'];
-                                } elseif (isset($chr, $this->chset['SH2'][$chr])) {
-                                    $temp_cw[] = 1; // shift 2
-                                    $shiftset = $this->chset['SH2'];
-                                } elseif (($enc == ENC_C40) AND isset($this->chset['S3C'][$chr])) {
-                                    $temp_cw[] = 2; // shift 3
-                                    $shiftset = $this->chset['S3C'];
-                                } elseif (($enc == ENC_TXT) AND isset($this->chset['S3T'][$chr])) {
-                                    $temp_cw[] = 2; // shift 3
-                                    $shiftset = $this->chset['S3T'];
-                                } else {
-                                    return false;
-                                }
-                                $temp_cw[] = $shiftset[$chr];
-                                $p += 2;
-                            }
-                            if ($p >= 3) {
-                                $c1 = array_shift($temp_cw);
-                                $c2 = array_shift($temp_cw);
-                                $c3 = array_shift($temp_cw);
-                                $p -= 3;
-                                $tmp = ((1600 * $c1) + (40 * $c2) + $c3 + 1);
-                                $cw[] = ($tmp >> 8);
-                                $cw[] = ($tmp % 256);
-                                $cw_num += 2;
-                                $pos = $epos;
-                                // 1. If the C40 encoding is at the point of starting a new double symbol character and if the look-ahead test (starting at step J) indicates another mode, switch to that mode.
                                 $newenc = $this->lookAheadTest($data, $pos, $enc);
                                 if ($newenc != $enc) {
+                                    // 1. If the look-ahead test (starting at step J) indicates another mode, switch to that mode.
                                     $enc = $newenc;
                                     $cw[] = $this->getSwitchEncodingCodeword($enc);
                                     ++$cw_num;
-                                    break;
+                                    break; // exit from EDIFACT mode
                                 }
                             }
-                        } while (($p > 0) AND ($epos < $data_lenght));
-                        // process last data (if any)
-                        if ($p > 0) {
-                            // get remaining number of data symbols
-                            $cwr = ($this->getMaxDataCodewords($cw_num + 2) - $cw_num);
-                            if (($cwr == 1) AND ($p == 1)) {
-                                // d. If one symbol character remains and one C40 value (data character) remains to be encoded
-                                $c1 = array_shift($temp_cw);
-                                --$p;
-                                $cw[] = ($c1 + 1);
-                                ++$cw_num;
-                            } elseif (($cwr == 2) AND ($p == 1)) {
-                                // c. If two symbol characters remain and only one C40 value (data character) remains to be encoded
-                                $c1 = array_shift($temp_cw);
-                                --$p;
-                                $cw[] = 254;
-                                $cw[] = ($c1 + 1);
-                                $cw_num += 2;
-                            } elseif (($cwr == 2) AND ($p == 2)) {
-                                // b. If two symbol characters remain and two C40 values remain to be encoded
-                                $c1 = array_shift($temp_cw);
-                                $c2 = array_shift($temp_cw);
-                                $p -= 2;
-                                $tmp = ((1600 * $c1) + (40 * $c2) + 1);
-                                $cw[] = ($tmp >> 8);
-                                $cw[] = ($tmp % 256);
-                                $cw_num += 2;
-                            } else {
-                                // switch to ASCII encoding
-                                $enc = ENC_ASCII;
-                                $cw[] = $this->getSwitchEncodingCodeword($enc);
-                                ++$cw_num;
-                            }
                         }
-                        break;
                     }
-                case ENC_EDF: { // F. While in EDIFACT (EDF) encodation
-                        // initialize temporary array with 0 lenght
-                        $temp_cw = array();
-                        $epos = $pos;
-                        $field_lenght = 0;
-                        while ($epos < $data_lenght) {
-                            // 2. process the next character in EDIFACT encodation.
-                            $chr = ord($data{($epos)});
-                            ++$epos;
+                    break;
+                }
+                case self::ENC_BASE256: { // G. While in Base 256 (B256) encodation
+                    // initialize temporary array with 0 lenght
+                    $temp_cw = array();
+                    $field_lenght = 0;
+                    while (($pos < $data_lenght) AND ($field_lenght <= 1555)) {
+                        $newenc = $this->lookAheadTest($data, $pos, $enc);
+                        if ($newenc != $enc) {
+                            // 1. If the look-ahead test (starting at step J) indicates another mode, switch to that mode.
+                            $enc = $newenc;
+                            $cw[] = $this->getSwitchEncodingCodeword($enc);
+                            ++$cw_num;
+                            break; // exit from B256 mode
+                        } else {
+                            // 2. Otherwise, process the next character in Base 256 encodation.
+                            $chr = ord($data{($pos)});
+                            ++$pos;
                             $temp_cw[] = $chr;
                             ++$field_lenght;
-                            if (($field_lenght == 4) OR ($epos == $data_lenght)) {
-                                if ($field_lenght < 4) {
-                                    // set unlatch character
-                                    $temp_cw[] = 0x1f;
-                                    ++$field_lenght;
-                                    $enc = ENC_ASCII;
-                                    // fill empty characters
-                                    for ($i = $field_lenght; $i < 4; ++$i) {
-                                        $temp_cw[] = 0;
-                                    }
-                                }
-                                // encodes four data characters in three codewords
-                                $cw[] = (($temp_cw[0] & 0x3F) << 2) + (($temp_cw[1] & 0x30) >> 4);
-                                $cw[] = (($temp_cw[1] & 0x0F) << 4) + (($temp_cw[2] & 0x3C) >> 2);
-                                $cw[] = (($temp_cw[2] & 0x03) << 6) + ($temp_cw[3] & 0x3F);
-                                $cw_num += 3;
-                                $temp_cw = array();
-                                $pos = $epos;
-                                $field_lenght = 0;
-                            }
-                            // 1. If the EDIFACT encoding is at the point of starting a new triple symbol character and if the look-ahead test (starting at step J) indicates another mode, switch to that mode.
-                            if ($field_lenght == 0) {
-                                // get remaining number of data symbols
-                                $cwr = ($this->getMaxDataCodewords($cw_num + 2) - $cw_num);
-                                if ($cwr < 3) {
-                                    // return to ascii without unlatch
-                                    $enc = ENC_ASCII;
-                                    break; // exit from EDIFACT mode
-                                } else {
-                                    $newenc = $this->lookAheadTest($data, $pos, $enc);
-                                    if ($newenc != $enc) {
-                                        // 1. If the look-ahead test (starting at step J) indicates another mode, switch to that mode.
-                                        $enc = $newenc;
-                                        $cw[] = $this->getSwitchEncodingCodeword($enc);
-                                        ++$cw_num;
-                                        break; // exit from EDIFACT mode
-                                    }
-                                }
-                            }
                         }
-                        break;
                     }
-                case ENC_BASE256: { // G. While in Base 256 (B256) encodation
-                        // initialize temporary array with 0 lenght
-                        $temp_cw = array();
-                        $field_lenght = 0;
-                        while (($pos < $data_lenght) AND ($field_lenght <= 1555)) {
-                            $newenc = $this->lookAheadTest($data, $pos, $enc);
-                            if ($newenc != $enc) {
-                                // 1. If the look-ahead test (starting at step J) indicates another mode, switch to that mode.
-                                $enc = $newenc;
-                                $cw[] = $this->getSwitchEncodingCodeword($enc);
-                                ++$cw_num;
-                                break; // exit from B256 mode
-                            } else {
-                                // 2. Otherwise, process the next character in Base 256 encodation.
-                                $chr = ord($data{($pos)});
-                                ++$pos;
-                                $temp_cw[] = $chr;
-                                ++$field_lenght;
-                            }
-                        }
-                        // set field lenght
-                        if ($field_lenght <= 249) {
-                            $cw[] = $field_lenght;
-                            ++$cw_num;
-                        } else {
-                            $cw[] = (floor($field_lenght / 250) + 249);
-                            $cw[] = ($field_lenght % 250);
-                            $cw_num += 2;
-                        }
-                        if (!empty($temp_cw)) {
-                            // add B256 field
-                            foreach ($temp_cw as $p => $cht) {
-                                $cw[] = $this->get255StateCodeword($chr, ($cw_num + $p));
-                            }
-                        }
-                        break;
+                    // set field lenght
+                    if ($field_lenght <= 249) {
+                        $cw[] = $field_lenght;
+                        ++$cw_num;
+                    } else {
+                        $cw[] = (floor($field_lenght / 250) + 249);
+                        $cw[] = ($field_lenght % 250);
+                        $cw_num += 2;
                     }
+                    if (!empty($temp_cw)) {
+                        // add B256 field
+                        foreach ($temp_cw as $p => $cht) {
+                            $cw[] = $this->get255StateCodeword($chr, ($cw_num + $p));
+                        }
+                    }
+                    break;
+                }
             } // end of switch enc
         } // end of while
         // set last used encoding
@@ -891,17 +859,17 @@ class Datamatrix {
     /**
      * Places "chr+bit" with appropriate wrapping within array[].
      * (Annex F - ECC 200 symbol character placement)
-     * @param $marr (array) Array of symbols.
-     * @param $nrow (int) Number of rows.
-     * @param $ncol (int) Number of columns.
-     * @param $row (int) Row number.
-     * @param $col (int) Column number.
-     * @param $chr (int) Char byte.
-     * @param $bit (int) Bit.
+     * @param array $marr Array of symbols.
+     * @param int $nrow Number of rows.
+     * @param int $ncol Number of columns.
+     * @param int $row Row number.
+     * @param int $col Column number.
+     * @param int $chr Char byte.
+     * @param int $bit Bit.
      * @return array
-     * @protected
      */
-    protected function placeModule($marr, $nrow, $ncol, $row, $col, $chr, $bit) {
+    private function placeModule($marr, $nrow, $ncol, $row, $col, $chr, $bit)
+    {
         if ($row < 0) {
             $row += $nrow;
             $col += (4 - (($nrow + 4) % 8));
@@ -917,16 +885,16 @@ class Datamatrix {
     /**
      * Places the 8 bits of a utah-shaped symbol character.
      * (Annex F - ECC 200 symbol character placement)
-     * @param $marr (array) Array of symbols.
-     * @param $nrow (int) Number of rows.
-     * @param $ncol (int) Number of columns.
-     * @param $row (int) Row number.
-     * @param $col (int) Column number.
-     * @param $chr (int) Char byte.
+     * @param array $marr Array of symbols.
+     * @param int $nrow Number of rows.
+     * @param int $ncol Number of columns.
+     * @param int $row Row number.
+     * @param int $col Column number.
+     * @param int $chr Char byte.
      * @return array
-     * @protected
      */
-    protected function placeUtah($marr, $nrow, $ncol, $row, $col, $chr) {
+    private function placeUtah($marr, $nrow, $ncol, $row, $col, $chr)
+    {
         $marr = $this->placeModule($marr, $nrow, $ncol, $row - 2, $col - 2, $chr, 1);
         $marr = $this->placeModule($marr, $nrow, $ncol, $row - 2, $col - 1, $chr, 2);
         $marr = $this->placeModule($marr, $nrow, $ncol, $row - 1, $col - 2, $chr, 3);
@@ -941,14 +909,14 @@ class Datamatrix {
     /**
      * Places the 8 bits of the first special corner case.
      * (Annex F - ECC 200 symbol character placement)
-     * @param $marr (array) Array of symbols.
-     * @param $nrow (int) Number of rows.
-     * @param $ncol (int) Number of columns.
-     * @param $chr (int) Char byte.
+     * @param array $marr Array of symbols.
+     * @param int $nrow Number of rows.
+     * @param int $ncol Number of columns.
+     * @param int $chr Char byte.
      * @return array
-     * @protected
      */
-    protected function placeCornerA($marr, $nrow, $ncol, $chr) {
+    private function placeCornerA($marr, $nrow, $ncol, $chr)
+    {
         $marr = $this->placeModule($marr, $nrow, $ncol, $nrow - 1, 0, $chr, 1);
         $marr = $this->placeModule($marr, $nrow, $ncol, $nrow - 1, 1, $chr, 2);
         $marr = $this->placeModule($marr, $nrow, $ncol, $nrow - 1, 2, $chr, 3);
@@ -963,14 +931,14 @@ class Datamatrix {
     /**
      * Places the 8 bits of the second special corner case.
      * (Annex F - ECC 200 symbol character placement)
-     * @param $marr (array) Array of symbols.
-     * @param $nrow (int) Number of rows.
-     * @param $ncol (int) Number of columns.
-     * @param $chr (int) Char byte.
+     * @param array $marr Array of symbols.
+     * @param int $nrow Number of rows.
+     * @param int $ncol Number of columns.
+     * @param int $chr Char byte.
      * @return array
-     * @protected
      */
-    protected function placeCornerB($marr, $nrow, $ncol, $chr) {
+    private function placeCornerB($marr, $nrow, $ncol, $chr)
+    {
         $marr = $this->placeModule($marr, $nrow, $ncol, $nrow - 3, 0, $chr, 1);
         $marr = $this->placeModule($marr, $nrow, $ncol, $nrow - 2, 0, $chr, 2);
         $marr = $this->placeModule($marr, $nrow, $ncol, $nrow - 1, 0, $chr, 3);
@@ -985,14 +953,14 @@ class Datamatrix {
     /**
      * Places the 8 bits of the third special corner case.
      * (Annex F - ECC 200 symbol character placement)
-     * @param $marr (array) Array of symbols.
-     * @param $nrow (int) Number of rows.
-     * @param $ncol (int) Number of columns.
-     * @param $chr (int) Char byte.
+     * @param array $marr Array of symbols.
+     * @param int $nrow Number of rows.
+     * @param int $ncol Number of columns.
+     * @param int $chr Char byte.
      * @return array
-     * @protected
      */
-    protected function placeCornerC($marr, $nrow, $ncol, $chr) {
+    private function placeCornerC($marr, $nrow, $ncol, $chr)
+    {
         $marr = $this->placeModule($marr, $nrow, $ncol, $nrow - 3, 0, $chr, 1);
         $marr = $this->placeModule($marr, $nrow, $ncol, $nrow - 2, 0, $chr, 2);
         $marr = $this->placeModule($marr, $nrow, $ncol, $nrow - 1, 0, $chr, 3);
@@ -1007,14 +975,14 @@ class Datamatrix {
     /**
      * Places the 8 bits of the fourth special corner case.
      * (Annex F - ECC 200 symbol character placement)
-     * @param $marr (array) Array of symbols.
-     * @param $nrow (int) Number of rows.
-     * @param $ncol (int) Number of columns.
-     * @param $chr (int) Char byte.
+     * @param array $marr Array of symbols.
+     * @param int $nrow Number of rows.
+     * @param int $ncol Number of columns.
+     * @param int $chr Char byte.
      * @return array
-     * @protected
      */
-    protected function placeCornerD($marr, $nrow, $ncol, $chr) {
+    private function placeCornerD($marr, $nrow, $ncol, $chr)
+    {
         $marr = $this->placeModule($marr, $nrow, $ncol, $nrow - 1, 0, $chr, 1);
         $marr = $this->placeModule($marr, $nrow, $ncol, $nrow - 1, $ncol - 1, $chr, 2);
         $marr = $this->placeModule($marr, $nrow, $ncol, 0, $ncol - 3, $chr, 3);
@@ -1029,12 +997,12 @@ class Datamatrix {
     /**
      * Build a placement map.
      * (Annex F - ECC 200 symbol character placement)
-     * @param $nrow (int) Number of rows.
-     * @param $ncol (int) Number of columns.
+     * @param int $nrow Number of rows.
+     * @param int $ncol Number of columns.
      * @return array
-     * @protected
      */
-    protected function getPlacemetMap($nrow, $ncol) {
+    private function getPlacemetMap($nrow, $ncol)
+    {
         // initialize array with zeros
         $marr = array_fill(0, ($nrow * $ncol), 0);
         // set starting values
@@ -1092,8 +1060,3 @@ class Datamatrix {
     }
 
 }
-
-// end DataMatrix class
-//============================================================+
-// END OF FILE
-//============================================================+

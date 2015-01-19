@@ -11,23 +11,27 @@ Barcodes
 
 *Generating barcodes in PHP since 2015!*
 
-Supports HTML, PNG embedded base64 code, and SVG canvas
+Generates HTML, PNG, or SVG canvas
 
 - QR code
 - PDF417
-- C39, C39+
-- C39E, C39E+
-- C93
-- S25, S25+
-- I25, I25+
+- C39, C93, C11
+- S25
+- I25
 - C128, C128A, C128B, C128C
-- 2-Digits UPC-Based Extension
-- 5-Digits UPC-Based Extension
-- EAN 8, EAN 13
+- EAN-2, EAN-5, EAN-13
 - UPC-A, UPC-E
-- MSI (Variation of Plessey code)
+- MSI
+- POSTNET, PLANET, IMB
+- RMS4CC, KIX
+- Codabar
+- Pharmacode
 
 
+## Requirements
+
+- Barcodes requires ImageMagick to create PNGs in PHP 5.3.
+- Barcodes requires PHP bcmath extension for Intelligent Mail barcodes
 
 ## Installation
 
@@ -41,9 +45,9 @@ Or manually add the dependency to your project's `composer.json`:
 		"tklovett/barcodes": "dev-master"
 	}
 
-Next, update Composer from the Terminal:
+And tell composer to install it:
 
-    composer update
+    composer install
 
 ## Usage
 
@@ -119,3 +123,13 @@ Next, update Composer from the Terminal:
     echo DNS1D::getBarcodeHTML("4445645656", "CODE11");
     echo DNS1D::getBarcodeHTML("4445645656", "PHARMA");
     echo DNS1D::getBarcodeHTML("4445645656", "PHARMA2T");
+
+
+## TODO:
+
+- Convert snake_case method names to camelCase
+- Replace returns from barcode constructors with exception throws
+- Write tests
+- Write docs
+- parent::__construct($code); in all barcodes
+- remove unused methods
