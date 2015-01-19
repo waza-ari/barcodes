@@ -13,20 +13,28 @@ Barcodes
 
 Generates HTML, PNG, or SVG canvas
 
-- QR code
-- PDF417
-- C39, C93, C11
-- S25
-- I25
-- C128, C128A, C128B, C128C
-- EAN-2, EAN-5, EAN-13
-- UPC-A, UPC-E
-- MSI
-- POSTNET, PLANET, IMB
-- RMS4CC, KIX
-- Codabar
-- Pharmacode
+## Supported Barcode Types
 
+### One Dimensional
+- Codabar
+- Code 11
+- Code 39 (also extended and/or with check-digit) 
+- Code 93
+- Code 128 (A, B, C, or Auto)
+- EAN (2, 5, 13)
+- Intelligent Mail
+- Interleave 2 of 5
+- MSI (also  with check-digit)
+- Pharmacode
+- POSTNET (or PLANET)
+- RMS4CC (or KIX)
+- Standard 2 of 5 (also with check-digit)
+- UPC (A, E)
+
+### Two Dimensional
+- DataMatrix
+- PDF417
+- QR Code
 
 ## Requirements
 
@@ -42,8 +50,8 @@ You can install this package with the Composer CLI:
 Or manually add the dependency to your project's `composer.json`:
 
     "require": {
-		"tklovett/barcodes": "dev-master"
-	}
+        "tklovett/barcodes": "dev-master"
+    }
 
 And tell composer to install it:
 
@@ -51,78 +59,37 @@ And tell composer to install it:
 
 ## Usage
 
-    echo DNS1D::getBarcodeSVG("4445645656", "PHARMA2T");
-    echo DNS1D::getBarcodeHTML("4445645656", "PHARMA2T");
-    echo '<img src="data:image/png,' . DNS1D::getBarcodePNG("4", "C39+") . '" alt="barcode"   />';
-    echo DNS1D::getBarcodePNGPath("4445645656", "PHARMA2T");
-    echo '<img src="data:image/png,' . DNS1D::getBarcodePNG("4", "C39+") . '" alt="barcode"   />';
+First instantiate a BarcodeGenerator factory:
 
-
-
-    echo DNS1D::getBarcodeSVG("4445645656", "C39");
-    echo DNS2D::getBarcodeHTML("4445645656", "QRCODE");
-    echo DNS2D::getBarcodePNGPath("4445645656", "PDF417");
-    echo DNS2D::getBarcodeSVG("4445645656", "DATAMATRIX");
-    echo '<img src="data:image/png,' . DNS2D::getBarcodePNG("4", "PDF417") . '" alt="barcode"   />';
-
-
-## Width and Height example
-
-    echo DNS1D::getBarcodeSVG("4445645656", "PHARMA2T",3,33);
-    echo DNS1D::getBarcodeHTML("4445645656", "PHARMA2T",3,33);
-    echo '<img src="' . DNS1D::getBarcodePNG("4", "C39+",3,33) . '" alt="barcode"   />';
-    echo DNS1D::getBarcodePNGPath("4445645656", "PHARMA2T",3,33);
-    echo '<img src="data:image/png,' . DNS1D::getBarcodePNG("4", "C39+",3,33) . '" alt="barcode"   />';
+```php
+$generator = new BarcodeGenerator();
+```
     
+Then tell it to generate the barcode type of your choice for your code:
+
+```php
+$barcode = generator.generate(BarcodeType::QR_CODE, "This is what I want encoded");
+```
     
-## Color
+Finally, output SVG, HTML, or a PNG:
 
+```php
+$svg  = $barcode.toSVG();
+$html = $barcode.toHTML();
+$png  = $barcode.toPNG();
+```
 
-    echo DNS1D::getBarcodeSVG("4445645656", "PHARMA2T",3,33,"green");
-    echo DNS1D::getBarcodeHTML("4445645656", "PHARMA2T",3,33,"green");
-    echo '<img src="' . DNS1D::getBarcodePNG("4", "C39+",3,33,array(1,1,1)) . '" alt="barcode"   />';
-    echo DNS1D::getBarcodePNGPath("4445645656", "PHARMA2T",3,33,array(255,255,0));
-    echo '<img src="data:image/png,' . DNS1D::getBarcodePNG("4", "C39+",3,33,array(1,1,1)) . '" alt="barcode"   />';
+Need a custom height, width, or color for your barcode? No problem:
 
+```php
+$width = 20;
+$height = 30;
+$color = 'blue';
+$sizedSVG  = $barcode.toSVG($width, $height, $color);
+$sizedHTML = $barcode.toSVG($width, $height, $color);
+$sizedPNG  = $barcode.toSVG($width, $height, $color);
+```
 
-## 2D Barcodes
-
-    echo DNS2D::getBarcodeHTML("4445645656", "QRCODE");
-    echo DNS2D::getBarcodePNGPath("4445645656", "PDF417");
-    echo DNS2D::getBarcodeSVG("4445645656", "DATAMATRIX");     
-
-## 1D Barcodes
-
-    echo DNS1D::getBarcodeHTML("4445645656", "C39");
-    echo DNS1D::getBarcodeHTML("4445645656", "C39+");
-    echo DNS1D::getBarcodeHTML("4445645656", "C39E");
-    echo DNS1D::getBarcodeHTML("4445645656", "C39E+");
-    echo DNS1D::getBarcodeHTML("4445645656", "C93");
-    echo DNS1D::getBarcodeHTML("4445645656", "S25");
-    echo DNS1D::getBarcodeHTML("4445645656", "S25+");
-    echo DNS1D::getBarcodeHTML("4445645656", "I25");
-    echo DNS1D::getBarcodeHTML("4445645656", "I25+");
-    echo DNS1D::getBarcodeHTML("4445645656", "C128");
-    echo DNS1D::getBarcodeHTML("4445645656", "C128A");
-    echo DNS1D::getBarcodeHTML("4445645656", "C128B");
-    echo DNS1D::getBarcodeHTML("4445645656", "C128C");
-    echo DNS1D::getBarcodeHTML("44455656", "EAN2");
-    echo DNS1D::getBarcodeHTML("4445656", "EAN5");
-    echo DNS1D::getBarcodeHTML("4445", "EAN8");
-    echo DNS1D::getBarcodeHTML("4445", "EAN13");
-    echo DNS1D::getBarcodeHTML("4445645656", "UPCA");
-    echo DNS1D::getBarcodeHTML("4445645656", "UPCE");
-    echo DNS1D::getBarcodeHTML("4445645656", "MSI");
-    echo DNS1D::getBarcodeHTML("4445645656", "MSI+");
-    echo DNS1D::getBarcodeHTML("4445645656", "POSTNET");
-    echo DNS1D::getBarcodeHTML("4445645656", "PLANET");
-    echo DNS1D::getBarcodeHTML("4445645656", "RMS4CC");
-    echo DNS1D::getBarcodeHTML("4445645656", "KIX");
-    echo DNS1D::getBarcodeHTML("4445645656", "IMB");
-    echo DNS1D::getBarcodeHTML("4445645656", "CODABAR");
-    echo DNS1D::getBarcodeHTML("4445645656", "CODE11");
-    echo DNS1D::getBarcodeHTML("4445645656", "PHARMA");
-    echo DNS1D::getBarcodeHTML("4445645656", "PHARMA2T");
 
 
 ## TODO:

@@ -12,6 +12,7 @@ namespace tklovett\barcodes;
 abstract class BarcodeType
 {
     // One dimensional
+    const CODABAR = "Codabar";
     const CODE_11 = "Code 11";
     const CODE_39 = "Code 39";
     const CODE_39_CHECK_DIGIT = "Code 39 (Check Digit)";
@@ -38,7 +39,6 @@ abstract class BarcodeType
     const RMS4CC = "RMS4CC";
     const KIX = "KIX";
     const IMB = "IMB";
-    const CODABAR = "Codabar";
     const PHARMACODE = "Pharmacode";
     const PHARMACODE_TWO_TRACK = "Pharmacode Two-Track";
 
