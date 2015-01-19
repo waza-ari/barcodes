@@ -24,8 +24,6 @@
       "email": "tklovett@gmail.com"
     }
   ],
-  "require": {
-  },
   "autoload": {
     "psr-4": {
       "tklovett\\barcodes\\": "src/"
