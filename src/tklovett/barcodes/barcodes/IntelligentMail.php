@@ -175,7 +175,7 @@ class IntelligentMail extends OneDimensionalBarcode
 
     /**
      * Intelligent Mail Barcode calculation of Frame Check Sequence
-     * @param string $code_arr array of hexadecimal values (13 bytes holding 102 bits right justified).
+     * @param array $code_arr array of hexadecimal values (13 bytes holding 102 bits right justified).
      * @return int 11 bit Frame Check Sequence as integer (decimal base)
      */
     private function imb_crc11fcs($code_arr)

@@ -21,7 +21,7 @@ abstract class TwoDimensionalBarcode implements Barcode {
      * Array representation of barcode.
      * @protected
      */
-    protected $barcode_array = false;
+    protected $barcode_array;
 
     /**
      * Sets the code for this barcode

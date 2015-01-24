@@ -893,7 +893,7 @@ class DataMatrix extends TwoDimensionalBarcode
      * @param int $row Row number.
      * @param int $col Column number.
      * @param int $chr Char byte.
-     * @return array
+     * @return int[]
      */
     private function placeUtah($marr, $nrow, $ncol, $row, $col, $chr)
     {

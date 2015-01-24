@@ -902,7 +902,6 @@ class QRCode extends TwoDimensionalBarcode
     private function makeMaskNo($maskNo, $width, $s, &$d, $maskGenOnly = false)
     {
         $b = 0;
-        $bitMask = array();
         $bitMask = $this->generateMaskNo($maskNo, $width, $s, $d);
         if ($maskGenOnly) {
             return;
@@ -1731,7 +1730,7 @@ class QRCode extends TwoDimensionalBarcode
 
     /**
      * estimateBitStreamSize
-     * @param array $items
+     * @param int[] $items
      * @param int $version
      * @return int bits
      */
@@ -1776,13 +1775,12 @@ class QRCode extends TwoDimensionalBarcode
 
     /**
      * estimateVersion
-     * @param array $items
+     * @param int[] $items
      * @return int version estimate
      */
     private function estimateVersion($items)
     {
         $version = 0;
-        $prev = 0;
         do {
             $prev = $version;
             $bits = $this->estimateBitStreamSize($items, $prev);
@@ -1870,7 +1868,7 @@ class QRCode extends TwoDimensionalBarcode
 
     /**
      * convertData
-     * @param array $items
+     * @param int[] $items
      * @return array items
      */
     private function convertData($items)
@@ -1934,7 +1932,7 @@ class QRCode extends TwoDimensionalBarcode
 
     /**
      * mergeBitStream
-     * @param array $items items
+     * @param int[] $items items
      * @return array bitstream
      */
     private function mergeBitStream($items)
@@ -1952,7 +1950,7 @@ class QRCode extends TwoDimensionalBarcode
 
     /**
      * Returns a stream of bits.
-     * @param int $items
+     * @param int[] $items
      * @return array padded merged byte stream
      */
     private function getBitStream($items)
@@ -1963,7 +1961,7 @@ class QRCode extends TwoDimensionalBarcode
 
     /**
      * Pack all bit streams padding bits into a byte array.
-     * @param int $items
+     * @param int[] $items
      * @return array padded merged byte stream
      */
     private function getByteStream($items)

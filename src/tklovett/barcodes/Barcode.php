@@ -19,7 +19,7 @@ interface Barcode {
 
     /**
      * Returns a PNG representation of the barcode
-     * @return resource An image resource identifier representing the barcode
+     * @return string An base64 encoded image string representing the barcode
      */
     public function toPNG();
 
