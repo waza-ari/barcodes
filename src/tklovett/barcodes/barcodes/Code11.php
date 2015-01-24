@@ -36,8 +36,6 @@ class Code11 extends OneDimensionalBarcode
         );
         $this->barcode_array = array('code' => $code, 'maxw' => 0, 'maxh' => 1, 'bcode' => array());
         $k = 0;
-        $w = 0;
-        $seq = '';
         $len = strlen($code);
         // calculate check digit C
         $p = 1;

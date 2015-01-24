@@ -50,9 +50,8 @@ abstract class TwoDimensionalBarcode implements Barcode {
             $bgcol = imagecolorallocate($png, 255, 255, 255);
             imagecolortransparent($png, $bgcol);
             $fgcol = imagecolorallocate($png, $color[0], $color[1], $color[2]);
-        } elseif (extension_loaded('imagick')) {
+        } else if (extension_loaded('imagick')) {
             $imagick = true;
-            $bgcol = new \imagickpixel('rgb(255,255,255');
             $fgcol = new \imagickpixel('rgb(' . $color[0] . ',' . $color[1] . ',' . $color[2] . ')');
             $png = new \Imagick();
             $png->newImage($imageWidth, $imageHeight, 'none', 'png');

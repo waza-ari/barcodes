@@ -36,26 +36,20 @@ class IntelligentMail extends OneDimensionalBarcode
         }
         // Conversion of Routing Code
         switch (strlen($routing_code)) {
-            case 0: {
+            case 0:
                 $binary_code = 0;
                 break;
-            }
-            case 5: {
+            case 5:
                 $binary_code = bcadd($routing_code, '1');
                 break;
-            }
-            case 9: {
+            case 9:
                 $binary_code = bcadd($routing_code, '100001');
                 break;
-            }
-            case 11: {
+            case 11:
                 $binary_code = bcadd($routing_code, '1000100001');
                 break;
-            }
-            default: {
+            default:
                 return;
-                break;
-            }
         }
         $binary_code = bcmul($binary_code, 10);
         $binary_code = bcadd($binary_code, $tracking_number{0});
