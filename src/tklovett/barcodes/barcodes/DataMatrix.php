@@ -270,11 +270,11 @@ class DataMatrix extends TwoDimensionalBarcode
 
     /**
      * Product of two numbers in a Power-of-Two Galois Field
-     * @param $a (int) first number to multiply.
-     * @param $b (int) second number to multiply.
-     * @param $log (array) Log table.
-     * @param $alog (array) Anti-Log table.
-     * @param $gf (array) Number of Factors of the Reed-Solomon polynomial.
+     * @param int $a first number to multiply.
+     * @param int $b second number to multiply.
+     * @param array $log Log table.
+     * @param int[] $alog Anti-Log table.
+     * @param int $gf Number of Factors of the Reed-Solomon polynomial.
      * @return int product
      */
     private function getGFProduct($a, $b, $log, $alog, $gf)
@@ -287,17 +287,19 @@ class DataMatrix extends TwoDimensionalBarcode
 
     /**
      * Add error correction codewords to data codewords array (ANNEX E).
-     * @param $wd (array) Array of datacodewords.
-     * @param $nb (int) Number of blocks.
-     * @param $nd (int) Number of data codewords per block.
-     * @param $nc (int) Number of correction codewords per block.
-     * @param $gf (int) numner of fields on log/antilog table (power of 2).
-     * @param $pp (int) The value of its prime modulus polynomial (301 for ECC200).
+     * @param array $wd Array of datacodewords.
+     * @param int $nb Number of blocks.
+     * @param int $nd Number of data codewords per block.
+     * @param int $nc Number of correction codewords per block.
+     * @param int $gf numner of fields on log/antilog table (power of 2).
+     * @param int $pp The value of its prime modulus polynomial (301 for ECC200).
      * @return array data codewords + error codewords
      */
     private function getErrorCorrection($wd, $nb, $nd, $nc, $gf = 256, $pp = 301)
     {
         // generate the log ($log) and antilog ($alog) tables
+        $log = array();
+        $alog = array();
         $log[0] = 0;
         $alog[0] = 1;
         for ($i = 1; $i < $gf; ++$i) {
@@ -866,7 +868,7 @@ class DataMatrix extends TwoDimensionalBarcode
      * @param int $col Column number.
      * @param int $chr Char byte.
      * @param int $bit Bit.
-     * @return array
+     * @return int[]
      */
     private function placeModule($marr, $nrow, $ncol, $row, $col, $chr, $bit)
     {
@@ -913,7 +915,7 @@ class DataMatrix extends TwoDimensionalBarcode
      * @param int $nrow Number of rows.
      * @param int $ncol Number of columns.
      * @param int $chr Char byte.
-     * @return array
+     * @return int[]
      */
     private function placeCornerA($marr, $nrow, $ncol, $chr)
     {
@@ -935,7 +937,7 @@ class DataMatrix extends TwoDimensionalBarcode
      * @param int $nrow Number of rows.
      * @param int $ncol Number of columns.
      * @param int $chr Char byte.
-     * @return array
+     * @return int[]
      */
     private function placeCornerB($marr, $nrow, $ncol, $chr)
     {
@@ -957,7 +959,7 @@ class DataMatrix extends TwoDimensionalBarcode
      * @param int $nrow Number of rows.
      * @param int $ncol Number of columns.
      * @param int $chr Char byte.
-     * @return array
+     * @return int[]
      */
     private function placeCornerC($marr, $nrow, $ncol, $chr)
     {
@@ -979,7 +981,7 @@ class DataMatrix extends TwoDimensionalBarcode
      * @param int $nrow Number of rows.
      * @param int $ncol Number of columns.
      * @param int $chr Char byte.
-     * @return array
+     * @return int[]
      */
     private function placeCornerD($marr, $nrow, $ncol, $chr)
     {

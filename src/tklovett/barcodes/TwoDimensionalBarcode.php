@@ -37,7 +37,7 @@ abstract class TwoDimensionalBarcode implements Barcode {
      * @param int $width The width of a single rectangle element in pixels
      * @param int $height The height of a single rectangle element in pixels
      * @param array $color RGB (0-255) foreground color for rectangle elements (background is transparent)
-     * @return resource An image resource identifier representing the barcode
+     * @return string An base64 encoded image string representing the barcode
      */
     public function toPNG($width = 3, $height = 3, $color = array(0, 0, 0)) {
         // calculate image size
@@ -59,7 +59,7 @@ abstract class TwoDimensionalBarcode implements Barcode {
             $bar = new \imagickdraw();
             $bar->setfillcolor($fgcol);
         } else {
-            return false;
+            throw new \RuntimeException("PHP 4+ or the imagick extension is required to generate PNG barcodes.");
         }
         // print barcode elements
         $y = 0;

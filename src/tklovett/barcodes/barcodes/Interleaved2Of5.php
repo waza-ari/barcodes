@@ -23,6 +23,7 @@ class Interleaved2Of5 extends OneDimensionalBarcode
      */
     function __construct($code, $checkDigit = false)
     {
+        $chr = array();
         $chr['0'] = '11221';
         $chr['1'] = '21112';
         $chr['2'] = '12112';

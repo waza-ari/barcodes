@@ -344,7 +344,7 @@ class Code128 extends OneDimensionalBarcode
 
     /**
      * Split text code in A/B sequence for 128 code
-     * @param $code (string) code to split.
+     * @param string $code code to split.
      * @return array sequence
      */
     protected function get128ABSequence($code)

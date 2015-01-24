@@ -38,7 +38,7 @@ abstract class OneDimensionalBarcode implements Barcode
      * @param int $width The width of a single bar element in pixels
      * @param int $height The height of a single bar element in pixels
      * @param array $color RGB (0-255) foreground color for bar elements (background is transparent)
-     * @return resource An image resource identifier representing the barcode
+     * @return string An base64 encoded image string representing the barcode
      */
     public function toPNG($width = 2, $height = 30, $color = array(0, 0, 0))
     {
@@ -61,7 +61,7 @@ abstract class OneDimensionalBarcode implements Barcode
             $bar = new \imagickdraw();
             $bar->setfillcolor($fgcol);
         } else {
-            return null;
+            throw new \RuntimeException("PHP 4+ or the imagick extension is required to generate PNG barcodes.");
         }
         // print bars
         $x = 0;

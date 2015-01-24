@@ -23,6 +23,7 @@ class Code39 extends OneDimensionalBarcode
      */
     function __construct($code, $checkDigit = false, $extended = false)
     {
+        $chr = array();
         $chr['0'] = '111331311';
         $chr['1'] = '311311113';
         $chr['2'] = '113311113';

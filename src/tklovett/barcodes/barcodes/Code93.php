@@ -19,6 +19,7 @@ class Code93 extends OneDimensionalBarcode
      */
     function __construct($code)
     {
+        $chr = array();
         $chr[48] = '131112'; // 0
         $chr[49] = '111213'; // 1
         $chr[50] = '111312'; // 2

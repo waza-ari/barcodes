@@ -709,7 +709,7 @@ class QRCode extends TwoDimensionalBarcode
 
     /**
      * Return Reed-Solomon block code.
-     * @return array rsblocks
+     * @return int block code
      */
     private function getBlockCode()
     {
@@ -1777,7 +1777,7 @@ class QRCode extends TwoDimensionalBarcode
     /**
      * estimateVersion
      * @param array $items
-     * @param int $version
+     * @return int version estimate
      */
     private function estimateVersion($items)
     {

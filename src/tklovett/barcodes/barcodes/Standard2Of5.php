@@ -23,6 +23,7 @@ class Standard2Of5 extends OneDimensionalBarcode
      */
     function __construct($code, $checkDigit = false)
     {
+        $chr = array();
         $chr['0'] = '10101110111010';
         $chr['1'] = '11101010101110';
         $chr['2'] = '10111010101110';

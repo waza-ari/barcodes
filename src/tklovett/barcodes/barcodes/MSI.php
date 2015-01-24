@@ -22,6 +22,7 @@ class MSI extends OneDimensionalBarcode
      */
     function __construct($code, $checkDigit = false)
     {
+        $chr = array();
         $chr['0'] = '100100100100';
         $chr['1'] = '100100100110';
         $chr['2'] = '100100110100';

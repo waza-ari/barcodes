@@ -3,7 +3,6 @@
 namespace tklovett\barcodes\barcodes;
 
 
-use tklovett\barcodes\Barcode;
 use tklovett\barcodes\OneDimensionalBarcode;
 
 /**
