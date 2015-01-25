@@ -515,7 +515,7 @@ class PDF417 extends TwoDimensionalBarcode {
         $errsize = (2 << $ecl);
         // calculate number of columns (number of codewords per row) and rows
         $nce = ($numcw + $errsize + 1);
-        $cols = round((sqrt(4761 + (68 * $aspectratio * ROWHEIGHT * $nce)) - 69) / 34);
+        $cols = round((sqrt(4761 + (68 * $aspectratio * self::ROWHEIGHT * $nce)) - 69) / 34);
         // adjust cols
         if ($cols < 1) {
             $cols = 1;

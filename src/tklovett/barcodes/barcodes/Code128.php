@@ -18,7 +18,7 @@ class Code128 extends OneDimensionalBarcode
      * @param string $code The code to be represented by this barcode.
      * @param string $type The Code 128 subtype: 'A', 'B', 'C' or empty for automatic switch (AUTO mode)
      */
-    function __construct($code, $type = '')
+    function __construct($code, $type = null)
     {
         $chr = array(
             '212222', /* 00 */

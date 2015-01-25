@@ -26,7 +26,12 @@
   ],
   "autoload": {
     "psr-4": {
-      "tklovett\\barcodes\\": "src/"
+      "tklovett\\barcodes\\": "src/tklovett/barcodes/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "tklovett\\barcodes_tests\\": "tests/"
     }
   },
   "require-dev": {

@@ -30,7 +30,7 @@ use tklovett\barcodes\barcodes\UPCExtensions;
 class BarcodeGenerator
 {
     /**
-     * @param BarcodeType $barcodeType The type of barcode to generate
+     * @param string $barcodeType The type of barcode to generate
      * @param string $code The code to be represented by this barcode.
      * @return Barcode A barcode of the specified type representing the code
      */
