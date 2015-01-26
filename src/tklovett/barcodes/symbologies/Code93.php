@@ -1,5 +1,5 @@
 <?php
-namespace tklovett\barcodes\barcodes;
+namespace tklovett\barcodes\symbologies;
 
 
 use tklovett\barcodes\OneDimensionalBarcode;

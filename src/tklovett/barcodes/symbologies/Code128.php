@@ -1,7 +1,8 @@
 <?php
-namespace tklovett\barcodes\barcodes;
+namespace tklovett\barcodes\symbologies;
 
 
+use tklovett\barcodes\common\BarcodeArray;
 use tklovett\barcodes\OneDimensionalBarcode;
 
 /**
@@ -327,6 +328,7 @@ class Code128 extends OneDimensionalBarcode
         array_unshift($code_data, $startid);
         // build barcode array
         $this->barcode_array = array('code' => $code, 'maxw' => 0, 'maxh' => 1, 'bcode' => array());
+        $this->barcode_array = new BarcodeArray($code, 0, 1);
         foreach ($code_data as $val) {
             $seq = $chr[$val];
             for ($j = 0; $j < 6; ++$j) {

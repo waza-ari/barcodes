@@ -3,23 +3,23 @@
 namespace tklovett\barcodes;
 
 
-use tklovett\barcodes\barcodes\Codabar;
-use tklovett\barcodes\barcodes\Code11;
-use tklovett\barcodes\barcodes\Code128;
-use tklovett\barcodes\barcodes\Code39;
-use tklovett\barcodes\barcodes\Code93;
-use tklovett\barcodes\barcodes\DataMatrix;
-use tklovett\barcodes\barcodes\EanUpc;
-use tklovett\barcodes\barcodes\IntelligentMail;
-use tklovett\barcodes\barcodes\Interleaved2Of5;
-use tklovett\barcodes\barcodes\MSI;
-use tklovett\barcodes\barcodes\PDF417;
-use tklovett\barcodes\barcodes\Pharmacode;
-use tklovett\barcodes\barcodes\POSTNET;
-use tklovett\barcodes\barcodes\QRCode;
-use tklovett\barcodes\barcodes\RMS4CC;
-use tklovett\barcodes\barcodes\Standard2Of5;
-use tklovett\barcodes\barcodes\UPCExtensions;
+use tklovett\barcodes\symbologies\Codabar;
+use tklovett\barcodes\symbologies\Code11;
+use tklovett\barcodes\symbologies\Code128;
+use tklovett\barcodes\symbologies\Code39;
+use tklovett\barcodes\symbologies\Code93;
+use tklovett\barcodes\symbologies\DataMatrix;
+use tklovett\barcodes\symbologies\EanUpc;
+use tklovett\barcodes\symbologies\IntelligentMail;
+use tklovett\barcodes\symbologies\Interleaved2Of5;
+use tklovett\barcodes\symbologies\MSI;
+use tklovett\barcodes\symbologies\PDF417;
+use tklovett\barcodes\symbologies\Pharmacode;
+use tklovett\barcodes\symbologies\POSTNET;
+use tklovett\barcodes\symbologies\QRCode;
+use tklovett\barcodes\symbologies\RMS4CC;
+use tklovett\barcodes\symbologies\Standard2Of5;
+use tklovett\barcodes\symbologies\UPCExtensions;
 
 /**
  * BarcodeGenerator
