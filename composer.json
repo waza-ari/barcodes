@@ -1,5 +1,5 @@
 {
-  "name": "tklovett/barcodes",
+  "name": "wazaari/barcodes",
   "description": "Barcode generator for PHP supporting 20+ barcode types",
   "keywords": [
     "barcode",
